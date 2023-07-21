@@ -9,15 +9,26 @@ function onRawRequest(socket) {
    socket.on('close', () => {
       if (data != "~HI") {
          console.log(`RAW data to print (${data.length} bytes)`);
-         console.log('---');
-         console.log(data);
-         createZplLabel(data);
-         console.log('---');
+         var filename = createZplLabel(data);
+         printZplLabel(filename, data);
       }
    });
 }
 
 function createZplLabel(data) {
+   if (!fs.existsSync('zpl')) {
+      fs.mkdirSync('zpl');
+   }
+   var filename = 'label' + Date.now();
+   fs.writeFile('zpl\\'+filename+'.zpl', data, function (err) {
+      if (err) {
+         console.log(err);
+      }
+   });
+   return filename;
+}
+
+function printZplLabel(filename, data) {
 
    var options = {
       encoding: null,
@@ -34,8 +45,7 @@ function createZplLabel(data) {
       if (!fs.existsSync('pdf')) {
          fs.mkdirSync('pdf');
       }
-      var filename = 'pdf\\label' + Date.now() + '.pdf';
-      fs.writeFile(filename, body, function (err) {
+      fs.writeFile('pdf\\'+filename+'.pdf', body, function (err) {
          if (err) {
             console.log(err);
          }
