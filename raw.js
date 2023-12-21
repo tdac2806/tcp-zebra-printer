@@ -1,6 +1,7 @@
 'use strict';
 const fs = require('fs');
 const request = require('request');
+const path = require('path');
 
 function onRawRequest(socket) {
    let data = '';
@@ -20,7 +21,7 @@ function createZplLabel(data) {
       fs.mkdirSync('zpl');
    }
    var filename = 'label' + Date.now();
-   fs.writeFile('zpl\\'+filename+'.zpl', data, function (err) {
+   fs.writeFile(path.join(__dirname,'zpl',filename + '.zpl'), data, function (err) {
       if (err) {
          console.log(err);
       }
@@ -45,7 +46,7 @@ function printZplLabel(filename, data) {
       if (!fs.existsSync('pdf')) {
          fs.mkdirSync('pdf');
       }
-      fs.writeFile('pdf\\'+filename+'.pdf', body, function (err) {
+      fs.writeFile(path.join(__dirname, 'pdf',filename + '.pdf'), body, function (err) {
          if (err) {
             console.log(err);
          }
