@@ -10,7 +10,7 @@ function onRawRequest(socket) {
    socket.on('close', () => {
       if (data != "~HI") {
          console.log(`RAW data to print (${data.length} bytes)`);
-         var filename = createZplLabel(data);
+         const filename = createZplLabel(data);
          printZplLabel(filename, data);
       }
    });
@@ -20,7 +20,7 @@ function createZplLabel(data) {
    if (!fs.existsSync('zpl')) {
       fs.mkdirSync('zpl');
    }
-   var filename = 'label' + Date.now();
+   const filename = 'label' + Date.now();
    fs.writeFile(path.join(__dirname,'zpl',filename + '.zpl'), data, function (err) {
       if (err) {
          console.log(err);
@@ -31,7 +31,7 @@ function createZplLabel(data) {
 
 function printZplLabel(filename, data) {
 
-   var options = {
+   const options = {
       encoding: null,
       formData: { file: data },
       headers: { 'Accept': 'application/pdf' },
